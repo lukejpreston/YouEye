@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "You Eye",
+            "path": ".",
+            "folder_exclude_patterns": [
+                "_site",
+                ".sass-cache",
+                ".you_eye"
+            ],
+            "file_exclude_patterns": [
+                "Gemfile.lock"
+            ]
+        }
+    ]
+}

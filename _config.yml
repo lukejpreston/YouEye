@@ -1,0 +1,9 @@
+highlighter: rouge
+permalink: pretty
+navigation: [ { name: "home", href: ""}]
+footer: {
+    left: "You Eye",
+    right: "Developed by Luke Preston",
+    icons: [{href: "https://github.com/lukejpreston/you_eye", kind: "github"}]
+  }
+url: "http://lukejpreston.github.io/you_eye"
