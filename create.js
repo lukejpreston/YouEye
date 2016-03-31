@@ -19,8 +19,23 @@ function exists(fileName) {
 }
 
 function copyFile(fileName, destination) {
-    var data = fs.readFileSync(fileName).toString()
-    fs.writeFileSync(destination, data)
+    var buffLength = 64 * 1024
+    var buff = new Buffer(buffLength)
+    fdr = fs.openSync(fileName, 'r')
+    fdw = fs.openSync(destination, 'w')
+
+    var bytesRead = 1
+    var pos = 0
+
+    while (bytesRead > 0) {
+        bytesRead = fs.readSync(fdr, buff, 0, buffLength, pos)
+        fs.writeFileSync(fdw, buff, 0, bytesRead)
+        pos += bytesRead
+    }
+
+    fs.closeSync(fdr)
+    fs.closeSync(fdw)
+
     console.log('copied:', fileName, destination);
 }
 
