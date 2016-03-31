@@ -2,15 +2,10 @@
     {% if site.uses_cookies %}
         {% include you_eye/components/cookies.html %}
     {% endif %}
-    {% if page.banner %}
-        <div class="container">
-        {% if jekyll.environment == "dev" %}
-            <img class="banner" src="{{page.banner_src}}">
-        {% else %}
-            <img class="banner" src="{{site.url}}{{page.banner_src}}">
-        {% endif %}
-            <span class="banner_title">{{page.banner_title}}</span>
-        </div>
+    {% if page.banner_src or page.banner_title %}
+        {% include you_eye/components/banner.html %}
+    {% else if site.banner_src or site.banner_title %}
+        {% include you_eye/components/banner.html %}
     {% endif %}
     {% include you_eye/components/navigation.html %}
 </header>

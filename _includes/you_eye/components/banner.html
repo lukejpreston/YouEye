@@ -1,0 +1,12 @@
+<div class="container">
+    {% if include.banner_src %}
+        {% if jekyll.environment == "dev" %}
+            <img class="banner" src="{{include.banner_src}}">
+        {% else %}
+            <img class="banner" src="{{site.url}}{{include.banner_src}}">
+        {% endif %}
+    {% endif %}
+    {% if include.banner_src %}
+        <span class="banner_title">{{include.banner_title}}</span>
+    {% endif %}
+</div>

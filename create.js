@@ -2,11 +2,14 @@
 
 const fs = require('fs')
 
-var name, projectDir
+var name, dir, projectDir
 
 process.argv.forEach(function(arg, index) {
     if (arg === 'name') name = process.argv[index + 1]
-    if (arg === 'dir') projectDir = __dirname + '/' + process.argv[index + 1]
+    if (arg === 'dir') {
+        dir = process.argv[index + 1]
+        projectDir = __dirname + '/' + process.argv[index + 1]
+    }
 })
 
 function exists(fileName) {
@@ -19,24 +22,10 @@ function exists(fileName) {
 }
 
 function copyFile(fileName, destination) {
-    var buffLength = 64 * 1024
-    var buff = new Buffer(buffLength)
-    fdr = fs.openSync(fileName, 'r')
-    fdw = fs.openSync(destination, 'w')
+    var data = fs.readFileSync(fileName).toString()
+    fs.writeFileSync(destination, data)
 
-    var bytesRead = 1
-    var pos = 0
-
-    while (bytesRead > 0) {
-        bytesRead = fs.readSync(fdr, buff, 0, buffLength, pos)
-        fs.writeFileSync(fdw, buff, 0, bytesRead)
-        pos += bytesRead
-    }
-
-    fs.closeSync(fdr)
-    fs.closeSync(fdw)
-
-    console.log('copied:', fileName, destination);
+    console.log('copied:', fileName, destination)
 }
 
 function copyFolder(folderName, destination) {
@@ -102,14 +91,20 @@ function createFolders() {
         return !exists(projectDir + folder)
     }).forEach(function(folder) {
         fs.mkdirSync(projectDir + folder)
-        console.log('created ', projectDir + folder);
+        console.log('created ', projectDir + folder)
     })
 }
 
 function createOnceFiles() {
     if (!exists(projectDir + '/_sass/site/main.scss')) {
         fs.writeFileSync(projectDir + '/_sass/site/main.scss', '')
-        console.log('created', projectDir + '/_sass/site/main.scss');
+        console.log('created', projectDir + '/_sass/site/main.scss')
+    }
+
+    if (!exists(projectDir + '/update.sh')) {
+        fs.writeFileSync(projectDir + '/update.sh', 'cd ../you_eye; ./create.js name ' + name + ' dir ' + dir)
+        fs.chmodSync(projectDir + '/update.sh', '755')
+        console.log('created', projectDir + '/update.sh')
     }
 
     const files = [
@@ -131,7 +126,6 @@ function createOrReplaceFiles() {
         '/_layouts/you_eye',
         '/_sass/you_eye',
         '/_sass/libs',
-        '/assets/libs',
         '/scripts/you_eye',
         '/scripts/libs',
         '/css'
@@ -158,4 +152,4 @@ createFolders()
 createOnceFiles()
 createOrReplaceFiles()
 
-console.log('created:', name, 'in', projectDir);
+console.log('created:', name, 'in', projectDir)
